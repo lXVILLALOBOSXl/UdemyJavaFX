@@ -75,14 +75,9 @@ public class LoginController implements Initializable {
                     .title("Mensaje")
                     .text("El usuario o contraseña no coinciden")
                     .position(Pos.CENTER).showInformation();
-            /*Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText("Usuario o Contraseña incorrecta");
-            alert.showAndWait().ifPresent(rs -> { if (rs == ButtonType.OK) { } });*/
             return;
         }
 
-        //Mostrar vista de dashboard
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
         BorderPane borderPane = fxmlLoader.load();
@@ -93,19 +88,6 @@ public class LoginController implements Initializable {
         com.systemnecs.util.Metodos.closeEffect(root);
         stage.show();
 
-
-        /*((Node)(event.getSource())).getScene().getWindow().hide();
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource("/fxml/Dashboard.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
 }

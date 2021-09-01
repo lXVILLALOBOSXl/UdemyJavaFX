@@ -4,6 +4,7 @@ import animatefx.animation.Tada;
 import com.github.sarxos.webcam.Webcam;
 import com.systemnecs.dao.ProductoDAO;
 import com.systemnecs.model.Producto;
+import com.systemnecs.util.ConexionDB;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -75,6 +76,9 @@ public class RegistrarProductoController implements Initializable {
     private BufferedImage bufferImage;
     private ObjectProperty<Image> imageProperty = new SimpleObjectProperty<>();
 
+    private ConexionDB conexionDB = new ConexionDB();
+    private ProductoDAO productoDAO;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cjprecio.setTextFormatter(new TextFormatter<>(new StringConverter<Double>(){
@@ -103,6 +107,16 @@ public class RegistrarProductoController implements Initializable {
 
     @FXML
     void abrirCamara(ActionEvent event) {
+
+        if(System.getProperty("os.name").equals("Mac OS X")){
+            org.controlsfx.control.Notifications
+                    .create()
+                    .title("Error")
+                    .text("La camara no puede abrir en el Sistema Operativo: " + System.getProperty("os.name"))
+                    .position(Pos.CENTER).showError();
+            return;
+        }
+
         if (Webcam.getWebcams().size() < 1) {
             Alert a = new Alert(Alert.AlertType.INFORMATION, "NO HAY CAMARAS DISPONIBLES", ButtonType.OK);
             a.showAndWait();
@@ -194,6 +208,16 @@ public class RegistrarProductoController implements Initializable {
         producto.setFechadevencimiento(cjfechavencimiento.getValue());
         producto.setImagen(com.systemnecs.util.Metodos.ImageToByte(imageView.getImage()));
 
+        conexionDB.conectar();
+        productoDAO = new ProductoDAO(conexionDB);
+        try {
+            int guardar = productoDAO.guardar(producto);
+            if(guardar > 0){
+                com.systemnecs.util.Metodos.closeEffect(root);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
     }
 }

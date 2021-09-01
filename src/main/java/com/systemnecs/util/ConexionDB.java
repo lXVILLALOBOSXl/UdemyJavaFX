@@ -6,9 +6,9 @@ public class ConexionDB {
 
     private Connection connection;
     private Statement statement;
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/POS?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private static final String JDBC_USER = "root";
-    private static final String JDBC_PASS = "";
+    private static final String JDBC_URL = "jdbc:mysql://156.67.72.201:3306/u696248240_POS?useSSL=false&useTimezone=true&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    private static final String JDBC_USER = "u696248240_luis";
+    private static final String JDBC_PASS = ";6Cci+M4b";
 
     public ConexionDB() { }
 
@@ -28,7 +28,6 @@ public class ConexionDB {
     public ResultSet CONSULTAR(String sql) throws SQLException {
         ResultSet resultSet = null;
         resultSet = statement.executeQuery(sql);
-        System.out.println(sql);
         return resultSet;
     }
 
