@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<AnchorPane fx:id="root" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.251" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.systemnecs.controller.ProductoController">
+    <children>
+        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox VBox.vgrow="ALWAYS">
+                    <children>
+                        <ToolBar orientation="VERTICAL" prefHeight="40.0">
+                            <items>
+                                <JFXButton fx:id="btnListar" contentDisplay="TOP" maxWidth="1.7976931348623157E308" onAction="#listarProductos" text="Listar">
+                                    <graphic>
+                                        <FontIcon iconColor="#2196f3" iconLiteral="fa-refresh" iconSize="22" />
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton fx:id="btnNuevo" contentDisplay="TOP" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" onAction="#nuevoProducto" text="Nuevo">
+                                    <graphic>
+                                        <FontIcon iconColor="#2196f3" iconLiteral="fa-tag" iconSize="22" />
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton fx:id="btnEditar" contentDisplay="TOP" layoutX="10.0" layoutY="65.0" maxWidth="1.7976931348623157E308" onAction="#editarProducto" text="Editar">
+                                    <graphic>
+                                        <FontIcon iconColor="#2196f3" iconLiteral="fa-edit" iconSize="22" />
+                                    </graphic>
+                                </JFXButton>
+                                <JFXButton fx:id="btnBorrar" contentDisplay="TOP" layoutX="10.0" layoutY="120.0" maxWidth="1.7976931348623157E308" onAction="#borrarProducto" text="Borrar">
+                                    <graphic>
+                                        <FontIcon iconColor="#2196f3" iconLiteral="fa-trash-o" iconSize="22" />
+                                    </graphic>
+                                </JFXButton>
+                            </items>
+                        </ToolBar>
+                        <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <JFXTextField fx:id="cjBuscar">
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    </VBox.margin>
+                                </JFXTextField>
+                                <TableView fx:id="tablaProductos" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colNombre" prefWidth="75.0" text="NOMBRE" />
+                                        <TableColumn fx:id="colCodigo" prefWidth="75.0" text="CODIGO" />
+                                        <TableColumn fx:id="colStock" prefWidth="75.0" text="STOCK" />
+                                        <TableColumn fx:id="colStockMinimo" prefWidth="75.0" text="STOCK MINIMO" />
+                                        <TableColumn fx:id="colPrecio" prefWidth="75.0" text="PRECIO" />
+                                        <TableColumn fx:id="colFechaVencimiento" prefWidth="75.0" text="FECHA VENCIMIENTO" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

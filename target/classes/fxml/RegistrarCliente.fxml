@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.systemnecs.controller.RegistrarClienteController">
+    <children>
+        <HBox fx:id="header" prefWidth="200.0" style="-fx-background-color: #536dfe;">
+            <children>
+                <Text fx:id="txtCliente" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrar Cliente">
+                    <font>
+                        <Font name="System Bold" size="36.0" />
+                    </font>
+                </Text>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" top="10.0" />
+            </padding>
+        </HBox>
+        <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+            <children>
+                <GridPane hgap="10.0" VBox.vgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="N° Documento:" />
+                        <Label text="Nombre:" GridPane.rowIndex="1" />
+                        <Label text="Apellido:" GridPane.rowIndex="2" />
+                        <Label text="Direccion:" GridPane.rowIndex="3" />
+                        <Label text="Telefono:" GridPane.rowIndex="4" />
+                        <JFXTextField fx:id="cjDocumento" GridPane.columnIndex="1" />
+                        <JFXTextField fx:id="cjNombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="cjApellido" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <JFXTextField fx:id="cjDireccion" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <JFXTextField fx:id="cjTelefono" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    </children>
+                    <padding>
+                        <Insets left="10.0" right="10.0" />
+                    </padding>
+                </GridPane>
+                <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                    <children>
+                        <JFXButton fx:id="btnGuardar" onAction="#guardar" style="-fx-background-color: #25d366;" text="Guardar" textFill="#f8f0f0">
+                            <font>
+                                <Font name="System Bold" size="15.0" />
+                            </font>
+                            <graphic>
+                                <FontIcon iconColor="WHITE" iconLiteral="fa-save" iconSize="20" />
+                            </graphic></JFXButton>
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>
+
+
