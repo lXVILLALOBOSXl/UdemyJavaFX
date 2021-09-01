@@ -15,11 +15,15 @@ import javafx.fxml.Initializable;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDatePicker;
@@ -33,6 +37,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
+
+import javax.imageio.ImageIO;
 
 public class RegistrarProductoController implements Initializable {
     @FXML
@@ -78,6 +84,10 @@ public class RegistrarProductoController implements Initializable {
 
     private ConexionDB conexionDB = new ConexionDB();
     private ProductoDAO productoDAO;
+
+    private Producto producto = null;
+
+    private boolean STATUS = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -198,7 +208,10 @@ public class RegistrarProductoController implements Initializable {
             return;
         }
 
-        Producto producto = new Producto();
+        if (getProducto() == null) {
+            this.producto = new Producto();
+        }
+
         producto.setNombreproducto(cjnombre.getText().trim());
         producto.setCodigodebarras(cjcodigo.getText().trim());
         producto.setReferencia(cjreferencia.getText().trim());
@@ -213,11 +226,43 @@ public class RegistrarProductoController implements Initializable {
         try {
             int guardar = productoDAO.guardar(producto);
             if(guardar > 0){
+                setSTATUS(true);
                 com.systemnecs.util.Metodos.closeEffect(root);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+
+        cjnombre.setText(producto.getNombreproducto().trim());
+        cjcodigo.setText(producto.getCodigodebarras());
+        cjreferencia.setText(producto.getReferencia());
+        cjstock.setText(""+ producto.getStock());
+        cjstockminimo.setText(""+ producto.getStockminimo());
+        cjprecio.setText((NumberFormat.getCurrencyInstance().format(producto.getPrecio())));
+        cjfechavencimiento.setValue(producto.getFechadevencimiento());
+        try {
+            if (producto.getImagen() != null) {
+                imageView.setImage(SwingFXUtils.toFXImage(ImageIO.read(new ByteArrayInputStream(producto.getImagen())), null));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(RegistrarProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public boolean isSTATUS() {
+        return STATUS;
+    }
+
+    public void setSTATUS(boolean STATUS) {
+        this.STATUS = STATUS;
     }
 }

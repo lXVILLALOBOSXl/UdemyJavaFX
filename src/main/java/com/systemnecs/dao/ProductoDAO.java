@@ -41,24 +41,58 @@ public class ProductoDAO {
     }
 
     public int guardar(Producto producto) throws SQLException {
-        String sql = "INSERT INTO producto ( ";
-        sql += " codigodebarras, referencia, nombreproducto, stock, stockminimo, descripcion, estado, precio, fechadevencimiento, imagen ";
-        sql += ") VALUES (";
-        sql += " '"+producto.getCodigodebarras()+"' , '"+producto.getReferencia()+"' , '"+producto.getNombreproducto()+"' , '"+producto.getStock()+"' , ";
-        sql += " '"+producto.getStockminimo()+"' , '"+producto.getDescripcion()+"' , '"+producto.getEstado()+"' , '"+producto.getPrecio()+"' , ";
-        sql += " '"+producto.getFechadevencimiento()+"' , ? ";
-        sql += ")";
-
-        PreparedStatement preparedStatement = conexionDB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        preparedStatement.setBytes(1, producto.getImagen());
-
-        int insert = preparedStatement.executeUpdate();
+        String sql = "";
         if (producto.getIdproducto() == 0) {
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            resultSet.next();
-            insert = resultSet.getInt(1);
-            resultSet.close();
+            sql = "INSERT INTO producto ( ";
+            sql += " codigodebarras, referencia, nombreproducto, stock, stockminimo, descripcion, estado, precio, fechadevencimiento, imagen ";
+            sql += ") VALUES (";
+            sql += " '"+producto.getCodigodebarras()+"' , '"+producto.getReferencia()+"' , '"+producto.getNombreproducto()+"' , '"+producto.getStock()+"' , ";
+            sql += " '"+producto.getStockminimo()+"' , '"+producto.getDescripcion()+"' , '"+producto.getEstado()+"' , '"+producto.getPrecio()+"' , ";
+            sql += " '"+producto.getFechadevencimiento()+"' , ? ";
+            sql += ")";
+        } else {
+            sql = "UPDATE producto SET \n"
+                    + "	codigodebarras='"+producto.getCodigodebarras()+"', referencia='"+producto.getReferencia()+"', nombreproducto='"+producto.getNombreproducto()+"', \n"
+                    + " stock=" + producto.getStock() + ", "+"stockminimo="+producto.getStockminimo()+", descripcion='"+producto.getDescripcion()+"', estado='"+producto.getEstado()+"', precio="+producto.getPrecio()+", \n"
+                    + " fechadevencimiento='"+producto.getFechadevencimiento()+"' , imagen=? WHERE idproducto="+producto.getIdproducto()+";";
+        }
+
+
+        PreparedStatement pst = conexionDB.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        pst.setBytes(1, producto.getImagen());
+
+        int insert = pst.executeUpdate();
+        if (producto.getIdproducto() == 0) {
+            ResultSet rs = pst.getGeneratedKeys();
+            rs.next();
+            insert = rs.getInt(1);
+            rs.close();
         }
         return insert;
+    }
+
+    public Producto getById(int idproducto) throws SQLException {
+        Producto p = null;
+        ResultSet rs = this.conexionDB.CONSULTAR("SELECT * FROM producto WHERE idproducto="+idproducto);
+        if(rs.next()){
+            p = new Producto();
+            p.setIdproducto(idproducto);
+            p.setCodigodebarras(rs.getString("codigodebarras").trim());
+            p.setReferencia(rs.getString("referencia").trim());
+            p.setNombreproducto(rs.getString("nombreproducto").trim());
+            p.setStock(rs.getDouble("stock"));
+            p.setStockminimo(rs.getDouble("stockminimo"));
+            p.setDescripcion(rs.getString("descripcion").trim());
+            p.setImagen(rs.getBytes("imagen"));
+            p.setEstado(rs.getString("estado").trim());
+            p.setPrecio(rs.getDouble("precio"));
+            p.setFechadevencimiento(rs.getDate("fechadevencimiento").toLocalDate());
+        }
+        return p;
+    }
+
+    public boolean delete(int idproducto) throws SQLException {
+        String sql = "DELETE FROM producto WHERE idproducto="+idproducto;
+        return conexionDB.GUARDAR(sql);
     }
 }
