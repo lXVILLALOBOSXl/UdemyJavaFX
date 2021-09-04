@@ -117,7 +117,6 @@ public class RegistrarProductoController implements Initializable {
 
     @FXML
     void abrirCamara(ActionEvent event) {
-
         if(System.getProperty("os.name").equals("Mac OS X")){
             org.controlsfx.control.Notifications
                     .create()

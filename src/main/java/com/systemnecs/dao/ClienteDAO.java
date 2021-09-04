@@ -21,11 +21,11 @@ public class ClienteDAO {
 
         String sql = null;
         if (c.getIdcliente() == 0) {
-            sql = "INSERT INTO POS.cliente(\n"
+            sql = "INSERT INTO cliente(\n"
                     + "	nombrecliente, apellidocliente, direccioncliente, telefonocliente, numerodocumento)\n"
                     + "	VALUES ('"+c.getNombrecliente()+"', '"+c.getApellidocliente()+"', '"+c.getDireccioncliente()+"', '"+c.getTelefonocliente()+"', '"+c.getNumerodocumento()+"');";
         } else {
-            sql = "UPDATE POS.cliente\n" +
+            sql = "UPDATE cliente\n" +
                     "	SET nombrecliente='"+c.getNombrecliente()+"', apellidocliente='"+c.getApellidocliente()+"', direccioncliente='"+c.getDireccioncliente()+"', "
                     + "telefonocliente="+c.getTelefonocliente()+"', numerodocumento='"+c.getNumerodocumento()+"'\n" +
                     "	WHERE idcliente="+c.getIdcliente()+";";
@@ -43,7 +43,7 @@ public class ClienteDAO {
         return n;
     }
 
-    public List<Cliente> getAll() throws SQLException{
+    public List<Cliente> getAll() throws SQLException {
         List<Cliente> lista = new ArrayList<>();
         Cliente c = null;
         ResultSet rs = this.conexionDB.CONSULTAR("SELECT idcliente, nombrecliente, apellidocliente FROM cliente;");

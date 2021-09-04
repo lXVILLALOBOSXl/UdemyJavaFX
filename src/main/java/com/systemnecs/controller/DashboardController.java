@@ -7,6 +7,8 @@ import javafx.fxml.Initializable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXTabPane;
@@ -78,8 +80,16 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    void mostraRealizarVenta(ActionEvent event) {
-
+    void mostraRealizarVenta(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RegistrarVenta.fxml"));
+        VBox ap = loader.load();
+        RegistrarVentaController rvc = loader.getController();
+        Tab tabRealizarVenta = new Tab(LocalDateTime.now().format(DateTimeFormatter.ofPattern("EEE dd MMM hh:mm:ss a")), ap);
+        tabRealizarVenta.setGraphic(FontIcon.of(new FontIcon("fa-asl-interpreting").getIconCode(), 20, Color.valueOf("#FFF")));
+        tabRealizarVenta.setClosable(true);
+        tabPane.getTabs().add(tabRealizarVenta);
+//        rvc.getCjCodigoBarras().requestFocus();
+        tabPane.getSelectionModel().select(tabRealizarVenta);
     }
 
 
