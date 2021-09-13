@@ -1,14 +1,13 @@
 package com.systemnecs.controller;
 
+import animatefx.animation.Tada;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.systemnecs.dao.ClienteDAO;
 import com.systemnecs.dao.ProductoDAO;
-import com.systemnecs.model.Cliente;
-import com.systemnecs.model.DetalleVenta;
-import com.systemnecs.model.Producto;
+import com.systemnecs.model.*;
 import com.systemnecs.util.ConexionDB;
 import com.systemnecs.util.CurrencyCell;
 import com.systemnecs.util.DoubleCell;
@@ -21,16 +20,23 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.NumberFormat;
@@ -119,7 +125,7 @@ public class RegistrarVentaController implements Initializable {
 
     ObservableList<DetalleVenta> listaPedido = FXCollections.observableArrayList();
 
-    private Integer iva = 1;
+    private Integer iva = Comercio.getInstance(null).getIva();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -204,6 +210,9 @@ public class RegistrarVentaController implements Initializable {
             org.controlsfx.control.Notifications.create().title("Aviso").text("No se cargaron los productos").position(Pos.CENTER).showWarning();
             Logger.getLogger(RegistrarVentaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        txtTituloEmpresa.setText(Comercio.getInstance(null).getNombre());
+        lblIva.setText("IVA: ("+this.iva+"%)");
     }
 
     @FXML
@@ -273,8 +282,44 @@ public class RegistrarVentaController implements Initializable {
     }
 
     @FXML
-    void pagar(ActionEvent event) {
+    void pagar(ActionEvent event) throws IOException {
 
+        if(comboCliente.getSelectionModel().getSelectedItem()==null){
+            new Tada(comboCliente).play();
+            org.controlsfx.control.Notifications.create().title("Aviso").text("Seleccione un cliente").position(Pos.CENTER).showWarning();
+            return;
+        }
+
+        Venta v = new Venta();
+        v.setCliente(comboCliente.getSelectionModel().getSelectedItem());
+        v.setFormadepago(comboFormaDePago.getSelectionModel().getSelectedItem());
+        v.setDetalleventa(listaPedido);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Pagar.fxml"));
+        VBox vbox = loader.load();
+
+        PagarController controller = loader.getController();
+        controller.setVenta(v);
+
+        Scene scene = new Scene(vbox);
+        Stage stage = new Stage();
+        stage.setTitle("Confirmar venta");
+        stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/images/productos.png")));
+        stage.setScene(scene);
+        stage.initOwner(root.getScene().getWindow());
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.setResizable(false);
+        stage.setIconified(false);
+        stage.showAndWait();
+
+        if(controller.getIdventa() > 0){
+            comboCliente.getSelectionModel().clearSelection();
+            listaPedido.clear();
+            cjCodigoBarras.requestFocus();
+            txtSubtotal.setText("$0");
+            txtIva.setText("$0");
+            txtTotal.setText("$0");
+        }
     }
 
     @FXML

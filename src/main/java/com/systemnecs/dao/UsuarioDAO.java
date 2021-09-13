@@ -24,7 +24,7 @@ public class UsuarioDAO {
             usuario.setPassword(password);
             usuario.setNombre(resultSet.getString("nombre"));
 
-            Sesion.getUsuario(usuario);
+            Sesion.getSesion(usuario);
         }
         return  usuario;
     }
